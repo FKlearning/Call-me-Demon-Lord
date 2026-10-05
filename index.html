@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101725">
+  <title>他们说我是魔王 · 钟下未竟之名</title>
+  <link rel="icon" href="assets/pixel-v2/icon.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="play.css">
+  <link rel="stylesheet" href="pixel.css">
+  <link rel="stylesheet" href="d13.css">
+  <link rel="stylesheet" href="d14.css">
+  <script src="village-map.js" defer></script>
+  <script src="core.js" defer></script>
+  <script src="reports.js" defer></script>
+  <script src="story.js" defer></script>
+  <script src="d10.js" defer></script>
+  <script src="d10-scenes.js" defer></script>
+  <script src="campaign.js" defer></script>
+  <script src="campaign-story.js" defer></script>
+  <script src="d12.js" defer></script>
+  <script src="pixel-art.js" defer></script>
+  <script src="combat-fx.js" defer></script>
+  <script src="input.js" defer></script>
+  <script src="d13-ui.js" defer></script>
+  <script src="d14-codex.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div class="brand"><span class="brand-mark">♛</span><div><h1>他们说我是魔王</h1></div></div>
+      <div class="top-actions"><button id="journal-button" class="icon-button" aria-expanded="false" aria-controls="chronicle">见闻册</button><button id="ending-book-button" class="icon-button">结局册</button><button id="sound-button" class="icon-button" title="开启或关闭声音">声音 开</button><button id="pause-button" class="icon-button">暂停</button><button id="help-button" class="icon-button">设置</button></div>
+    </header>
+
+    <div class="game-layout">
+      <section class="stage-column">
+        <div class="status-row">
+          <div class="chapter"><span id="chapter-label" class="eyebrow">故事还没有开始</span><strong id="objective-label">你有自己的名字吗？</strong></div>
+          <div class="clock"><span id="timer-label">—</span><span class="eyebrow" id="timer-caption">村落纪事</span></div>
+        </div>
+        <div class="arena" id="arena">
+          <canvas id="game-canvas" width="1024" height="688" tabindex="0" inputmode="none" aria-label="魔王与村落的战斗场景，WASD 或方向键移动"></canvas>
+          <div class="arena-vignette"></div>
+          <div id="boss-hud" class="boss-hud hidden"><div><span id="boss-name">被期待的勇者</span><span id="boss-action">他带着村民的希望而来</span></div><div class="boss-track"><div id="boss-fill"></div></div><div id="boss-preparations"></div></div>
+          <div class="player-hud" id="player-hud"><div class="hud-line"><span>魔王</span><span id="health-number">140 / 140</span></div><div class="meter health"><div id="health-fill"></div></div><div class="hud-line small"><span>炎息</span><span id="energy-number">100</span></div><div class="meter energy"><div id="energy-fill"></div></div></div>
+          <div class="growth-hud"><div class="hud-line"><span id="growth-label">Lv 1</span><span id="growth-number">0 / 40</span></div><div class="meter growth"><div id="growth-fill"></div></div><div id="growth-directions" class="growth-directions" aria-label="实际送达见闻的成长方向点"></div></div>
+          <div class="scene-intel" id="scene-intel"><div id="scene-goal">撑过三夜，迎战勇者</div><div id="scene-reports">暂无待处理消息</div><div id="scene-legend"></div></div>
+          <div id="causal-cue" class="causal-cue hidden" aria-live="polite"></div>
+          <canvas id="minimap" class="minimap" width="210" height="142" role="button" tabindex="0" aria-label="打开村落地图，游戏暂停。地图显示玩家、敌人、关键人物和传信人"></canvas>
+          <div id="courier-guide" class="courier-guide hidden"><span><b>色块 → ↗ 成长　＋　◉ 勇者知情</b><br><small>默认放行；想截断这两条影响，追上按 E。</small></span><button id="dismiss-courier-guide" aria-label="关闭报信提示">知道了</button></div>
+          <div id="target-info" class="target-info hidden"></div>
+          <div id="growth-cue" class="growth-cue hidden"></div>
+          <div id="field-hud" class="field-hud hidden"></div>
+          <div id="interaction-hint" class="interaction-hint hidden"></div>
+          <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+          <div id="overlay" class="overlay"></div>
+        </div>
+        <div class="skill-row"><div class="skill" id="fire-skill"><kbd>左键</kbd><div><strong id="fire-name">炎息</strong><span>停火恢复炎息</span></div><span id="fire-ready" class="skill-state">就绪</span></div><div class="skill" id="roar-skill"><kbd>Q / 右键</kbd><div><strong id="roar-name">震慑吼声</strong><span id="roar-tip">内圈伤害 · 外圈控制</span></div><span id="roar-ready" class="skill-state">就绪</span></div><div class="skill" id="dash-skill"><kbd>空格</kbd><div><strong id="dash-name">蛮力冲撞</strong><span id="dash-tip">短暂无敌 · 破坏障碍</span></div><span id="dash-ready" class="skill-state">1 / 1</span></div></div>
+        <footer class="controls"><span><kbd>W A S D</kbd> / 方向键移动</span><span><kbd>E</kbd> 截信 / 道具</span><span><kbd>Esc</kbd> 暂停</span><span id="sample-label">战斗表现 · D15-B</span><button id="retreat-button" class="hidden" disabled>结束本夜</button></footer>
+      </section>
+
+      <aside class="chronicle hidden" id="chronicle">
+        <div class="journal-heading"><h2>见闻册</h2><button id="close-journal" class="icon-button" aria-label="关闭见闻册">关闭</button></div>
+        <div class="rumor-card"><div><span class="rumor-symbol fire-symbol">炎</span><strong>烈焰传说</strong><span id="flame-count" class="rumor-count">0</span></div><div class="rumor-dots" id="flame-dots"></div><p id="flame-quote">还没有人见过你的火焰。</p></div>
+        <div class="rumor-card"><div><span class="rumor-symbol fear-symbol">惧</span><strong>恐惧传说</strong><span id="fear-count" class="rumor-count">0</span></div><div class="rumor-dots" id="fear-dots"></div><p id="fear-quote">村子还不知道你的声音。</p></div>
+        <div class="rumor-card"><div><span class="rumor-symbol force-symbol">力</span><strong>蛮力传说</strong><span id="force-count" class="rumor-count">0</span></div><div class="rumor-dots" id="force-dots"></div><p id="force-quote">木围栏看上去很牢固。</p></div>
+        <div class="hero-note"><span class="eyebrow">勇者的准备</span><strong id="hero-personality">他还没有被推上舞台</strong><p id="hero-intel">他只能根据送达的见闻准备。拦下报信者，也会失去这次传说强化。</p><div id="hero-clues" class="clue-tags"></div></div>
+        <div class="build-heading">本局构筑</div><div id="build-list" class="build-list"></div><div class="witness-heading"><span>刚刚发生的事</span><span class="live-dot"></span></div><div id="witness-log" class="witness-log"><p>故事还没有开始。</p></div>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

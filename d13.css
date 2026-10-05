@@ -1,0 +1,20 @@
+/* D13 reading and spotlight presentation. Pixel art supplies every character. */
+.story-key{background:transparent;font-weight:700;padding:0 1px;color:#f1cc84}.story-key.place-key{color:#90d7dc;border-bottom:1px solid #90d7dc66}.story-key.event-key{color:#f1cc84}
+.scene-portrait{object-fit:contain;object-position:bottom;image-rendering:pixelated;background:#202132!important;flex-shrink:0}
+.overlay.prologue-overlay{position:fixed;inset:0;z-index:30;padding:22px;align-items:center;justify-content:center;background:#101322;pointer-events:auto}
+.prologue-panel{width:min(1100px,100%);max-height:calc(100dvh - 44px);overflow:auto;padding:0;background:#171b2b;border:3px solid #b89c70;box-shadow:8px 8px 0 #080a13}
+.prologue-image{display:block;width:100%;max-height:54dvh;object-fit:contain;background:#15182a;image-rendering:pixelated;border-bottom:3px solid #8f785c}
+.prologue-copy{padding:18px 28px}.prologue-copy .cinematic-heading{color:#d6bd95;letter-spacing:1px}.prologue-copy .scene-line{font-size:16px;line-height:1.9;max-width:900px;margin:12px auto;white-space:normal}.prologue-copy .button-row{justify-content:flex-end;margin-top:12px}
+.overlay.tutorial-overlay,.overlay.guide-overlay{background:transparent;backdrop-filter:none;padding:0;pointer-events:auto;overflow:hidden;align-items:flex-end}
+.guide-shade{position:absolute;z-index:0;background:#060915b8;backdrop-filter:blur(3px);pointer-events:none}
+.guide-focus{position:absolute;border:3px solid #ffe5a5;box-shadow:0 0 0 3px #211e34,0 0 22px #ffd68d70;z-index:1;pointer-events:none}
+.focus-caption{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);font-size:12px;white-space:nowrap;color:#ffe1a1;background:#111625;padding:5px 9px;border:2px solid #b99b6e}
+.focus-caption:after{content:'▼';display:block;position:absolute;bottom:-16px;left:calc(50% - 6px);color:#ffe1a1}
+.guide-panel.panel{position:absolute;right:14px;bottom:14px;z-index:2;display:flex;align-items:flex-end;gap:14px;width:min(650px,70%);padding:17px 20px;max-height:55%;overflow:auto;background:#171d30;border:3px solid #bd9e6b;box-shadow:6px 6px 0 #090c17;margin:0}
+.guide-lian{width:112px;height:164px;object-fit:contain;image-rendering:pixelated;flex-shrink:0;background:transparent;align-self:flex-end}
+.guide-copy{min-width:0;flex:1}.guide-panel h2{font-size:20px;margin:6px 0 9px}.guide-panel .tutorial-body{font-size:13px;line-height:1.8}.guide-panel .tutorial-body p{border:0;margin:6px 0;padding:0}.guide-panel .button-row{margin-top:12px;gap:8px}.guide-panel .button-row button{padding:9px 12px;font-size:12px}.guide-memory{display:block;font-size:10px;line-height:1.5;color:#98a8b7;margin-top:8px}
+.arena.teaching .toast-stack,.arena.teaching .growth-cue,.arena.teaching .causal-cue{visibility:hidden}
+.arena.teaching .arena-vignette{display:none}.scene-overlay.guide-overlay .guide-panel{pointer-events:auto}
+.field-hud{max-width:calc(100% - 28px)}
+@media(max-width:760px){.overlay.prologue-overlay{padding:12px}.prologue-panel{max-height:calc(100dvh - 24px)}.prologue-copy{padding:13px 15px}.prologue-image{max-height:42dvh}.prologue-copy .scene-line{font-size:14px;line-height:1.85}.prologue-copy .button-row{justify-content:flex-start}.overlay.tutorial-overlay,.overlay.guide-overlay{position:absolute;inset:0;padding:0;z-index:25}.guide-panel.panel{right:5px;bottom:5px;width:calc(100% - 10px);max-height:58%;padding:8px;gap:7px}.guide-lian{width:56px;height:90px}.guide-panel h2{font-size:13px;margin:3px 0 5px}.guide-panel .tutorial-body{font-size:10px;line-height:1.5}.guide-panel .eyebrow{font-size:8px}.guide-panel .button-row{margin-top:6px}.guide-panel .button-row button{font-size:10px;padding:6px}.guide-memory{font-size:8px;margin-top:4px}.focus-caption{font-size:9px;padding:3px 5px}.guide-focus{border-width:2px}}
+@media(prefers-reduced-motion:reduce){.guide-focus,.story-key{animation:none}}

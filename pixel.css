@@ -1,0 +1,54 @@
+/* D13: small original pixel characters, copper bells and an indigo village. */
+:root{--bg:#151421;--paper:#e4d8bc;--gold:#ebc583;--line:#626478;--muted:#b0acb7;--mint:#8bc8c6}
+body{background:#151421;background-image:linear-gradient(#363e6822 3px,transparent 3px),linear-gradient(90deg,#363e6822 3px,transparent 3px);background-size:48px 48px}
+button,kbd,.panel,.skill,.icon-button,.arena,.chronicle,.choice-card{border-radius:0!important}
+.arena{border:3px solid #626478;box-shadow:0 0 0 3px #151421,0 9px 0 #0d111c}
+#game-canvas{image-rendering:pixelated}.arena-vignette{box-shadow:inset 0 0 75px #10182a44}
+.overlay{backdrop-filter:none}.overlay.title-overlay{background:#202238 url('assets/pixel-v2/cover.png') center/cover no-repeat;image-rendering:pixelated}
+.epic-title .title-copy{background:#151421eb;padding:35px 32px;width:52%;border:3px solid #626478;border-left:6px solid #bf8d4f;box-shadow:9px 9px 0 #101321bb}
+.epic-title .title-name{font-size:clamp(42px,5.6vw,76px);letter-spacing:5px;text-shadow:3px 3px 0 #151421}
+.epic-title .quote{font-family:'Microsoft YaHei',sans-serif;font-size:16px;line-height:1.85;color:#c6d1d0}
+.title-panel.epic-title{justify-content:flex-start}.title-version{margin-top:26px;color:#b0b8b7}
+.primary-button{background:#ebc583;color:#202238;box-shadow:4px 4px 0 #101321;border:2px solid #f1dcb3;letter-spacing:1px}
+.primary-button:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 #0a1421}
+.secondary-button,.icon-button{border:2px solid #626478;background:#292f50}.skill{background:#202238;border-width:2px}
+.choice-card{background:#1d2c40;border:2px solid var(--direction);box-shadow:4px 4px 0 #0c1523;transition:none}
+.choice-card:hover{background:#2a3b51;transform:translateY(-3px)}.quality-card{border:4px double var(--direction);background:#2e2a42}
+.scene-portrait{width:96px;height:114px;object-fit:contain;background-image:url('assets/pixel-v2/portraits.png');image-rendering:pixelated;box-shadow:none;border:0}
+.scene-portrait img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.guide-lian{image-rendering:pixelated}
+.cinematic-panel,.chapter-panel,.tutorial-panel{background:#202238;border:3px solid #bf8d4f;box-shadow:7px 7px 0 #151421}
+.scene-line{font-size:15px;line-height:1.85;white-space:pre-line}.scene-speaker{font-family:'Microsoft YaHei',sans-serif;font-size:19px;font-weight:bold}
+.chapter-panel{background-image:none}.direction-probabilities{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.direction-probabilities>span{display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;gap:5px;background:#101d2f;border:1px solid var(--direction);padding:8px;min-width:0;font-size:12px}
+.direction-probabilities small{width:100%;color:#acb9c3;font-size:10px}.direction-probabilities .exhausted{opacity:.5}
+.direction-probabilities b{font-size:11px}.probability-explanation{color:#b4c2c7;font-size:11px;line-height:1.6;margin:7px 0}
+.tutorial-panel{width:min(630px,100%);padding:26px;animation:none}.tutorial-header{display:flex;align-items:center;gap:14px}.tutorial-symbol{width:54px;height:54px;display:grid;place-items:center;background:var(--direction);color:#162337;font-size:27px;border:4px solid #ecdfc0}
+.tutorial-panel h2{font-size:24px;letter-spacing:1px;margin:10px 0}.tutorial-panel .tutorial-body{line-height:1.85;color:#cad4d7;font-size:14px}
+.tutorial-body p{padding-left:12px;border-left:3px solid var(--direction);margin:14px 0}.tutorial-body b{color:#f1dfb5}
+.tutorial-panel .quiet-summary{color:#93a9b8}.tutorial-panel .button-row{margin-top:22px}.tutorial-overlay{background:#07111dce}
+.causal-cue{display:block;max-width:470px;min-width:260px;text-align:left;background:#14243bed;border:2px solid var(--direction);padding:12px 15px;pointer-events:none;font-size:12px;line-height:1.6}
+.causal-cue strong{display:block;font-size:14px;color:var(--direction)}.causal-cue small{display:block;color:#c3ced0;font-size:11px;margin-top:3px}
+.causal-cue i{display:none}.courier-guide{display:none!important}#retreat-button{border:2px solid #c9b479;color:#eee1b6;cursor:pointer;background:#233345}
+.toast-stack{max-width:350px}.toast{background:#15263cef;border-color:#d4ba80;font-size:12px}
+@media(max-width:760px){.epic-title .title-copy{width:100%;padding:24px 19px}.epic-title .title-name{font-size:51px}.epic-title .quote{font-size:13px}.tutorial-panel{padding:16px}.tutorial-panel h2{font-size:19px}.tutorial-panel .tutorial-body{font-size:12px}.tutorial-symbol{width:42px;height:42px;font-size:21px}.direction-probabilities>span{padding:5px;font-size:10px}.direction-probabilities small{font-size:9px}.causal-cue{max-width:calc(100% - 25px);font-size:10px;padding:8px 11px}.scene-line{font-size:12px}.scene-portrait{border-width:2px}}
+@media(max-width:760px){.overlay.tutorial-overlay{position:fixed;inset:0;z-index:25;padding:18px;background:#07111ded}.tutorial-panel{max-height:calc(100dvh - 36px);overflow:auto}.tutorial-panel .quiet-summary{font-size:11px;line-height:1.7}}
+
+/* All game chrome uses the same square silhouettes and limited material palette. */
+.masthead{border-bottom:3px solid #34374f}.brand-mark{color:transparent;border:2px solid #626478;background:#202238 url('assets/pixel-v2/icon.png') center/contain no-repeat;image-rendering:pixelated}
+.brand h1{color:#ebc583}.clock>span:first-child{font-family:'Microsoft YaHei',sans-serif}.epic-title .title-name em{color:#ebc583}
+.player-hud,.growth-hud,.scene-intel,.boss-hud,.target-info,.field-hud{background:#202238ed;border:2px solid #626478;box-shadow:3px 3px 0 #15142188}
+.player-hud{border-top-color:#ad6c53}.growth-hud{border-top-color:#ac6bef}.boss-hud{border-top-color:#ebc583}.boss-track>div{background:#bf8d4f}
+.meter{border-radius:0;background:#151421}.health>div{background:#b96d64}.energy>div{background:#ebc583}.growth>div{background:#ac6bef}
+.scene-intel>div:first-child{color:#ebc583}.growth-directions,.hud-line{color:#d8c9ad}.minimap{border:2px solid #626478;image-rendering:pixelated}
+.chronicle{background:#202238f5;border:3px solid #626478;box-shadow:-6px 6px 0 #151421aa}.rumor-card,.ending-page{background:#292f50;border:2px solid #626478}.ending-page.earned{border-color:#bf8d4f}
+.hero-note,.witness-log p,.end-testimony{border-color:#626478}.clue-tags span,.preparation{background:#202238;border:1px solid #918375}.log-time,.quiet-summary,.controls{color:#aaa7b5}
+.choice-card{background:#292f50;box-shadow:4px 4px 0 #151421}.choice-card:hover{background:#363e58}.quality-card{background:#423347}.choice-card strong{color:#f0d8a7}
+.choice-card p,.help-list,.scene-line,.story-lines{color:#d7d0cb}.choice-comparison{border-top-color:#626478}.quality-tag{border-radius:0;background:#533675}
+.help-panel,.book-panel,.upgrade-panel,.ending-panel,.pause-panel{background:#202238;border:3px solid #626478;padding:24px;box-shadow:6px 6px 0 #151421}
+.help-causal,.death-notice{background:#292f50;border:2px solid #626478}.help-causal b,.scene-speaker{color:#ebc583}
+.primary-button:hover{background:#f3dbaa}.secondary-button:hover,.icon-button:hover{background:#363e58;border-color:#bf8d4f}kbd{background:#34344e;border:2px solid #626478;color:#ebc583;box-shadow:0 2px 0 #151421}
+.skill:first-child{border-top-color:#ef7d42}.skill:nth-child(2){border-top-color:#ac6bef}.skill:nth-child(3){border-top-color:#8bc8c6}.skill-state{color:#ebc583}
+.interaction-hint,.toast,.causal-cue,.growth-cue{background:#202238f5;border-radius:0;box-shadow:3px 3px 0 #151421}.interaction-hint{border:2px solid #bf8d4f;color:#ebc583}.causal-cue small{color:#d0c7cf}
+.story-lines{border-left:3px solid #bf8d4f}.scene-overlay .cinematic-panel{border-top:3px solid #ebc583}.scene-speaker,.panel h2,.ending-page h3{font-family:'Microsoft YaHei',sans-serif}
+.ending-panel{border-top-width:5px}.ending-unwritten{border-top-color:#8bc8c6}.ending-crown{border-top-color:#ef7d42}.ending-exile{border-top-color:#718572}
+@media(max-width:760px){.epic-title .title-copy{width:100%;background:#151421e8;padding:23px 19px}.scene-portrait{width:66px;height:80px}.help-panel,.book-panel,.upgrade-panel,.ending-panel,.pause-panel{padding:14px;border-width:2px}.player-hud,.growth-hud,.scene-intel,.boss-hud,.target-info,.field-hud{border-width:1px}.chronicle{border-width:2px}.scene-line{font-size:12px;line-height:1.85}}
