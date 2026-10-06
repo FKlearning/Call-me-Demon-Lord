@@ -120,9 +120,27 @@
     for(let i=0;i<6;i++){const a=i*Math.PI/3+(g.totalTime||0)*3,r=30*(1-n)+10;line(c,{x:x+Math.cos(a)*r,y:y+Math.sin(a)*r},{x:x+Math.cos(a)*(r+9),y:y+Math.sin(a)*(r+9)},col,3);}star(c,x,y,6+n*9,col,0);}
   function installArt(A){if(art)return;art=A;for(const key of['fireCone','field','fields','pet','corpse','effect']){original[key]=A[key];A[key]=({fireCone,field,fields,pet,corpse,effect})[key];}A.combatStyle='pixel-combat-v3';}
   class SoundBank{
-    constructor(){this.context=null;this.last=new Map();this.voices=0;this.buffer=null;this.peak=0;}
-    play(context,kind,muted=false){if(muted||!context||context.state!=='running')return false;const time=context.currentTime,gap=kind==='fire-hit'?.22:kind==='fire-loop'?.13:kind.endsWith('hit')?.07:.09;if(time-(this.last.get(kind)??-99)<gap||this.voices>=16)return false;this.last.set(kind,time);if(this.context!==context){this.context=context;this.buffer=context.createBuffer(1,context.sampleRate*.6,context.sampleRate);const data=this.buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=hash(i+472)*2-1;}
-      const fear=/fear|roar|echo|judg|shadow/.test(kind),fire=/fire|ignition|explosion|lance/.test(kind),heavy=/ignition|plunge|roar|judg|wood|shield|explosion/.test(kind),duration=kind==='fire-loop'?.15:heavy?.3:.12,volume=kind==='fire-loop'?.023:kind.endsWith('hit')?.033:.065;
+    constructor(){this.context=null;this.last=new Map();this.voices=0;this.buffer=null;this.peak=0;this.fire=null;this.fireBuffer=null;this.fireContext=null;}
+    // A held flame owns one quiet source; frames never retrigger its attack envelope.
+    updateFire(context,active,muted=false){
+      if(!active||muted||!context||context.state!=='running'){this.stopFire(!context||context.state!=='running');return false;}
+      if(this.fire?.context===context)return true;
+      this.stopFire(true);
+      if(this.fireContext!==context){this.fireContext=context;this.fireBuffer=context.createBuffer(1,context.sampleRate*2,context.sampleRate);const data=this.fireBuffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=hash(i+8641)*2-1;}
+      const source=context.createBufferSource(),filter=context.createBiquadFilter(),highpass=context.createBiquadFilter(),gain=context.createGain(),time=context.currentTime;
+      source.buffer=this.fireBuffer;source.loop=true;filter.type='lowpass';filter.frequency.value=500;filter.Q.value=.5;highpass.type='highpass';highpass.frequency.value=90;highpass.Q.value=.5;
+      gain.gain.setValueAtTime(.0001,time);gain.gain.linearRampToValueAtTime(.012,time+.06);
+      source.connect(filter);filter.connect(highpass);highpass.connect(gain);gain.connect(context.destination);
+      const voice={context,source,filter,highpass,gain,cleaned:false};
+      voice.cleanup=()=>{if(voice.cleaned)return;voice.cleaned=true;source.disconnect();filter.disconnect();highpass.disconnect();gain.disconnect();};
+      source.onended=voice.cleanup;this.fire=voice;source.start();return true;
+    }
+    stopFire(immediate=false){const voice=this.fire;if(!voice)return;this.fire=null;const time=voice.context.currentTime;
+      if(immediate||voice.context.state!=='running'){voice.source.stop();voice.cleanup();return;}
+      voice.gain.gain.cancelScheduledValues(time);voice.gain.gain.setValueAtTime(voice.gain.gain.value,time);voice.gain.gain.linearRampToValueAtTime(.0001,time+.05);voice.source.stop(time+.055);
+    }
+    play(context,kind,muted=false){if(kind==='fire-loop'||muted||!context||context.state!=='running')return false;const time=context.currentTime,gap=kind==='fire-hit'?.65:kind.endsWith('hit')?.07:.09;if(time-(this.last.get(kind)??-99)<gap||this.voices>=16)return false;this.last.set(kind,time);if(this.context!==context){this.context=context;this.buffer=context.createBuffer(1,context.sampleRate*.6,context.sampleRate);const data=this.buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=hash(i+472)*2-1;}
+      const fear=/fear|roar|echo|judg|shadow/.test(kind),fire=/fire|ignition|explosion|lance/.test(kind),heavy=/ignition|plunge|roar|judg|wood|shield|explosion/.test(kind),duration=heavy?.3:.12,volume=kind.endsWith('hit')?.033:.065;
       const noise=context.createBufferSource(),filter=context.createBiquadFilter(),gain=context.createGain();noise.buffer=this.buffer;filter.type='bandpass';filter.frequency.setValueAtTime(fire?1300:fear?450:2200,time);filter.frequency.exponentialRampToValueAtTime(fire?320:120,time+duration);filter.Q.value=.7;gain.gain.setValueAtTime(.001,time);gain.gain.linearRampToValueAtTime(volume,time+.008);gain.gain.exponentialRampToValueAtTime(.001,time+duration);noise.connect(filter);filter.connect(gain);gain.connect(context.destination);noise.start();noise.stop(time+duration);this.voices++;this.peak=Math.max(this.peak,this.voices);noise.onended=()=>{this.voices--;noise.disconnect();filter.disconnect();gain.disconnect();};
       if(heavy||fear){const tone=context.createOscillator(),body=context.createGain();tone.type=fear?'sine':'triangle';tone.frequency.setValueAtTime(fear?155:85,time);tone.frequency.exponentialRampToValueAtTime(fear?50:28,time+duration);body.gain.setValueAtTime(volume*.8,time);body.gain.exponentialRampToValueAtTime(.001,time+duration);tone.connect(body);body.connect(context.destination);tone.start();tone.stop(time+duration);tone.onended=()=>{tone.disconnect();body.disconnect();};}return true;
     }
